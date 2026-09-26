@@ -1,0 +1,48 @@
+import type { Room } from '../types/room';
+
+export const mockRooms: Room[] = [
+  {
+    id: 'room-101',
+    propertyId: 'prop-1',
+    roomNumber: '101',
+    floor: 1,
+    type: 'double',
+    rent: 9500,
+    status: 'occupied',
+    capacity: 2,
+    occupiedCount: 2,
+  },
+  {
+    id: 'room-102',
+    propertyId: 'prop-1',
+    roomNumber: '102',
+    floor: 1,
+    type: 'single',
+    rent: 14000,
+    status: 'available',
+    capacity: 1,
+    occupiedCount: 0,
+  },
+  {
+    id: 'room-103',
+    propertyId: 'prop-1',
+    roomNumber: '103',
+    floor: 1,
+    type: 'triple',
+    rent: 7500,
+    status: 'available',
+    capacity: 3,
+    occupiedCount: 2,
+  },
+  {
+    id: 'room-201',
+    propertyId: 'prop-1',
+    roomNumber: '201',
+    floor: 2,
+    type: 'double',
+    rent: 9500,
+    status: 'maintenance',
+    capacity: 2,
+    occupiedCount: 0,
+  },
+];
