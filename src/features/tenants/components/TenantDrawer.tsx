@@ -6,7 +6,7 @@ import { Button } from '../../../components/ui/Button';
 import { Input } from '../../../components/ui/Input';
 import { StatusBadge } from '../../../components/common/StatusBadge';
 import { formatCurrency } from '../../../lib/utils';
-import { normalizeBedLabel } from '../tenantUtils';
+import { normalizeBedLabel, getTenantRentStatus } from '../tenantUtils';
 
 export interface TenantDrawerProps {
   isOpen: boolean;
@@ -51,6 +51,7 @@ export const TenantDrawer: React.FC<TenantDrawerProps> = ({ isOpen, onClose, ten
       monthlyRent,
       negotiatedRent: monthlyRent,
       bedLabel: normalizeBedLabel(draft.bedLabel),
+      rentStatus: draft.rentStatus || getTenantRentStatus(draft),
     });
     setIsEditing(false);
   };
@@ -67,6 +68,7 @@ export const TenantDrawer: React.FC<TenantDrawerProps> = ({ isOpen, onClose, ten
             <span>{draft.age ? "Age " + draft.age + " · " : ""}Resident · Room {draft.roomNumber}</span>
           </div>
           <div className="tenant-profile-actions">
+            <StatusBadge status={getTenantRentStatus(draft)} />
             <StatusBadge status={draft.status} />
             <Button
               type="button"
@@ -102,11 +104,19 @@ export const TenantDrawer: React.FC<TenantDrawerProps> = ({ isOpen, onClose, ten
               <Input label="Move-in date" type="date" value={draft.moveInDate} onChange={(e) => updateDraft('moveInDate', e.target.value)} />
               <Input label="Expected move-out" type="date" value={draft.expectedMoveOutDate || ''} onChange={(e) => updateDraft('expectedMoveOutDate', e.target.value)} />
               <div className="input-group">
-                <label className="input-label" htmlFor="tenant-status">Status</label>
+                <label className="input-label" htmlFor="tenant-status">Resident Status</label>
                 <select id="tenant-status" className="input-field" value={draft.status} onChange={(e) => updateDraft('status', e.target.value)}>
                   <option value="active">Active</option>
                   <option value="notice">Notice</option>
                   <option value="moved_out">Moved out</option>
+                </select>
+              </div>
+              <div className="input-group">
+                <label className="input-label" htmlFor="tenant-rent-status">Rent Status</label>
+                <select id="tenant-rent-status" className="input-field" value={draft.rentStatus || getTenantRentStatus(draft)} onChange={(e) => updateDraft('rentStatus', e.target.value as any)}>
+                  <option value="paid">Paid</option>
+                  <option value="pending">Pending</option>
+                  <option value="overdue">Overdue</option>
                 </select>
               </div>
               <Input label="Advance payment" type="number" min="0" value={draft.advancePayment || ''} onChange={(e) => updateDraft('advancePayment', Number(e.target.value))} />
@@ -138,6 +148,7 @@ export const TenantDrawer: React.FC<TenantDrawerProps> = ({ isOpen, onClose, ten
             <div className="tenant-detail-financials">
               <div><span>Advance payment</span><strong>{formatCurrency(draft.advancePayment || 0)}</strong></div>
               <div><span>Agreed monthly rent</span><strong>{formatCurrency(draft.negotiatedRent || draft.monthlyRent)}</strong></div>
+              <div><span>Rent status</span><strong><StatusBadge status={getTenantRentStatus(draft)} /></strong></div>
             </div>
           </>
         )}

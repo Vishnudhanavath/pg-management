@@ -17,7 +17,10 @@ const loadTenants = (): Tenant[] => {
     const saved = localStorage.getItem(TENANTS_STORAGE_KEY);
     if (!saved) return mockTenants;
     const parsed: unknown = JSON.parse(saved);
-    return Array.isArray(parsed) ? parsed as Tenant[] : mockTenants;
+    if (Array.isArray(parsed) && parsed.length >= mockTenants.length) {
+      return parsed as Tenant[];
+    }
+    return mockTenants;
   } catch (error) {
     console.error('Failed to load tenants from localStorage', error);
     return mockTenants;
@@ -72,9 +75,10 @@ export const Tenants: React.FC = () => {
     }
     const name = String(values.get('name'));
     const roomNumber = String(values.get('roomNumber'));
-    const rent = Number(values.get('monthlyRent'));
     const age = Number(values.get('age'));
+    const rent = Number(values.get('monthlyRent'));
     const aadhaarNumber = String(values.get('aadhaarNumber')).replace(/\D/g, '');
+    const rentStatus = (values.get('rentStatus') as 'paid' | 'pending' | 'overdue') || 'paid';
     const newTenant: Tenant = {
       id: crypto.randomUUID(), name, age, phone: String(values.get('phone')), aadhaarNumber,
       alternatePhone: String(values.get('alternatePhone')), emergencyPhone: String(values.get('emergencyPhone')), email: String(values.get('email')),
@@ -83,6 +87,7 @@ export const Tenants: React.FC = () => {
       moveInDate: String(values.get('moveInDate')), expectedMoveOutDate: '', depositAmount: Number(values.get('depositAmount')) || 0,
       advancePayment: Number(values.get('advancePayment')) || 0, monthlyRent: rent, negotiatedRent: rent,
       aadhaarProof: { name: proof.name, type: proof.type, dataUrl: proofDataUrl }, status: 'active',
+      rentStatus,
     };
     setTenants((current) => [newTenant, ...current]);
     setIsAddOpen(false);
@@ -111,6 +116,14 @@ export const Tenants: React.FC = () => {
             <Input label="Deposit amount" name="depositAmount" type="number" min="0" defaultValue="0" />
             <Input label="Advance payment" name="advancePayment" type="number" min="0" defaultValue="0" />
             <Input label="Agreed monthly rent" name="monthlyRent" type="number" min="0" placeholder="e.g. 9500" required />
+            <div className="input-group">
+              <label className="input-label" htmlFor="new-tenant-rent-status">Rent status</label>
+              <select id="new-tenant-rent-status" name="rentStatus" className="input-field" defaultValue="paid">
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="overdue">Overdue</option>
+              </select>
+            </div>
           </div>
           <div className="tenant-proof-field">
             <label className="input-label" htmlFor="tenant-aadhaar-proof">Aadhaar proof</label>

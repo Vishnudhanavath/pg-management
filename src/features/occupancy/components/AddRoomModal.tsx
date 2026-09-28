@@ -6,7 +6,7 @@ import {
   Check,
   Building2,
   IndianRupee,
-  Sparkles,
+  DoorClosed,
 } from 'lucide-react';
 import { Modal } from '../../../components/ui/Modal';
 import { Button } from '../../../components/ui/Button';
@@ -16,15 +16,6 @@ import { usePropertyStore } from '../../../store/usePropertyStore';
 import { toast } from '../../../store/useToastStore';
 import type { RoomStatus } from '../../../types/room';
 
-const ROOM_AMENITY_OPTIONS = [
-  'Attached Washroom',
-  'Air Conditioning',
-  'Private Balcony',
-  'Water Geyser',
-  'Study Desk & Chair',
-  'Cupboard / Wardrobe',
-];
-
 interface AddRoomFormProps {
   onSuccess: () => void;
 }
@@ -32,10 +23,6 @@ interface AddRoomFormProps {
 const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSuccess }) => {
   const { addRoom, activeFloor, rooms } = useRoomStore();
   const { selectedProperty } = usePropertyStore();
-
-  const totalFloors = selectedProperty?.totalFloors || 3;
-  const floorsList = Array.from({ length: totalFloors }, (_, i) => i + 1);
-
   const getNextRoomNumberForFloor = (f: number) => {
     const floorRooms = rooms.filter(
       (r) => r.propertyId === selectedProperty?.id && r.floor === f
@@ -53,26 +40,15 @@ const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSuccess }) => {
     return `${f}${nextSuffix < 10 ? '0' : ''}${nextSuffix}`;
   };
 
-  const [floor, setFloor] = useState<number>(activeFloor);
+  const floor = activeFloor;
   const [roomNumber, setRoomNumber] = useState<string>(getNextRoomNumberForFloor(activeFloor));
   const [bedCapacity, setBedCapacity] = useState<number>(2);
   const [rent, setRent] = useState<string>(
     selectedProperty?.sharingRents?.[2]?.toString() || '8500'
   );
   const [status, setStatus] = useState<RoomStatus>('available');
-  const [amenities, setAmenities] = useState<string[]>([
-    'Attached Washroom',
-    'Study Desk & Chair',
-    'Cupboard / Wardrobe',
-  ]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const toggleAmenity = (amenity: string) => {
-    setAmenities((prev) =>
-      prev.includes(amenity) ? prev.filter((a) => a !== amenity) : [...prev, amenity]
-    );
-  };
 
   const validate = (): boolean => {
     const newErrors: Record<string, string> = {};
@@ -109,7 +85,7 @@ const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSuccess }) => {
         rent: Number(rent),
         status,
         occupiedCount: 0,
-        amenities,
+        amenities: [],
       });
 
       toast.success(
@@ -125,26 +101,6 @@ const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSuccess }) => {
 
   return (
     <form onSubmit={handleSubmit} noValidate>
-      {/* Floor Selection Tabs */}
-      <div className="input-group">
-        <label className="input-label">Select Floor *</label>
-        <div className="floor-selector-row">
-          {floorsList.map((f) => (
-            <button
-              type="button"
-              key={f}
-              className={`floor-select-btn ${floor === f ? 'active' : ''}`}
-              onClick={() => {
-                setFloor(f);
-                setRoomNumber(getNextRoomNumberForFloor(f));
-              }}
-            >
-              Floor {f}
-            </button>
-          ))}
-        </div>
-      </div>
-
       {/* Room Number & Rent */}
       <div className="form-row-2">
         <Input
@@ -233,31 +189,7 @@ const AddRoomForm: React.FC<AddRoomFormProps> = ({ onSuccess }) => {
         </div>
       </div>
 
-      {/* Amenities Selection */}
-      <div className="input-group" style={{ marginBottom: 0 }}>
-        <label className="input-label">
-          <Sparkles size={14} style={{ color: 'var(--primary)' }} />
-          Room Amenities
-        </label>
-        <div className="amenities-chip-grid">
-          {ROOM_AMENITY_OPTIONS.map((a) => {
-            const isSelected = amenities.includes(a);
-            return (
-              <button
-                type="button"
-                key={a}
-                className={`amenity-chip ${isSelected ? 'selected' : ''}`}
-                onClick={() => toggleAmenity(a)}
-              >
-                <span>{a}</span>
-                <span className="amenity-chip-status">
-                  {isSelected ? <Check size={11} strokeWidth={2.5} /> : '+'}
-                </span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
+
 
       {/* Footer Submit Button */}
       <div className="modal-footer" style={{ margin: '20px -24px -20px -24px' }}>
@@ -284,7 +216,7 @@ export const AddRoomModal: React.FC = () => {
 
   const modalTitle = (
     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-      <BedDouble size={20} style={{ color: 'var(--primary)' }} />
+      <DoorClosed size={20} style={{ color: 'var(--primary)' }} />
       <span>Add Room to Floor {activeFloor}</span>
     </div>
   );

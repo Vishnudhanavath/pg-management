@@ -9,6 +9,7 @@ import {
   User,
   ShieldAlert,
   Lock,
+  DoorClosed,
 } from 'lucide-react';
 import type { Room, RoomStatus } from '../../../types/room';
 import { Modal } from '../../../components/ui/Modal';
@@ -122,7 +123,7 @@ export const RoomModal: React.FC<RoomModalProps> = ({ isOpen, onClose, room }) =
         <div className="room-popup-header-title">
           <div className="room-popup-title-main">
             <div className="room-popup-icon-wrap">
-              <BedDouble size={20} />
+              <DoorClosed size={20} />
             </div>
             <span>Room {room.roomNumber} Configuration</span>
           </div>

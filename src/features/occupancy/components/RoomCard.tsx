@@ -1,5 +1,5 @@
 import React from 'react';
-import { BedDouble, Check, Users, Trash2, User, Plus, X, Pencil } from 'lucide-react';
+import { BedDouble, Check, Users, Trash2, User, Plus, X, Pencil, DoorClosed } from 'lucide-react';
 import type { Room } from '../../../types/room';
 import { StatusBadge } from '../../../components/common/StatusBadge';
 import { formatCurrency } from '../../../lib/utils';
@@ -10,20 +10,17 @@ import { mockTenants } from '../../../data/mockTenants';
 export interface RoomCardProps {
   room: Room;
   onClick?: (room: Room) => void;
+  onDeleteClick?: (room: Room) => void;
   onOccupiedBedClick?: (room: Room, bedIndex: number) => void;
 }
 
-export const RoomCard: React.FC<RoomCardProps> = ({ room, onClick, onOccupiedBedClick }) => {
-  const { deleteRoom, addBedToRoom, removeBedFromRoom } = useRoomStore();
+export const RoomCard: React.FC<RoomCardProps> = ({ room, onClick, onDeleteClick, onOccupiedBedClick }) => {
+  const { addBedToRoom, removeBedFromRoom } = useRoomStore();
 
-  const handleDelete = (e: React.MouseEvent) => {
+  const handleDeleteClick = (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (window.confirm(`Are you sure you want to delete Room ${room.roomNumber}?`)) {
-      deleteRoom(room.id);
-      toast.info(
-        `Room ${room.roomNumber} Deleted`,
-        `Floor ${room.floor} • ${room.capacity} beds removed`
-      );
+    if (onDeleteClick) {
+      onDeleteClick(room);
     }
   };
 
@@ -74,13 +71,9 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room, onClick, onOccupiedBed
       <div className="room-card-header">
         <div className="room-title-wrap">
           <div className="room-num-badge">
-            <BedDouble size={16} className="room-icon" />
+            <DoorClosed size={16} className="room-icon" />
             <span className="room-number">Room {room.roomNumber}</span>
           </div>
-          <span className="room-capacity-badge">
-            <Users size={12} style={{ marginRight: '4px' }} />
-            {getSharingLabel(room.capacity)}
-          </span>
         </div>
 
         <div className="room-actions-wrap">
@@ -101,7 +94,7 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room, onClick, onOccupiedBed
             type="button"
             className="room-delete-btn"
             title="Delete Room"
-            onClick={handleDelete}
+            onClick={handleDeleteClick}
             aria-label={`Delete Room ${room.roomNumber}`}
           >
             <Trash2 size={14} />
@@ -200,19 +193,25 @@ export const RoomCard: React.FC<RoomCardProps> = ({ room, onClick, onOccupiedBed
             <span className="rent-amount">{formatCurrency(room.rent)}</span>
             <span className="rent-period">/bed/mo</span>
           </div>
-          <span className="rent-share-badge">{getSharingLabel(room.capacity)}</span>
         </div>
 
-        {room.amenities && room.amenities.length > 0 && (
-          <div className="room-amenities-mini">
-            {room.amenities.slice(0, 2).map((a) => (
-              <span key={a} className="mini-amenity-tag">
-                {a}
-              </span>
-            ))}
-          </div>
-        )}
+        <div className="room-footer-right">
+          <span className="room-capacity-badge">
+            <Users size={13} />
+            <span>{getSharingLabel(room.capacity)}</span>
+          </span>
+          {room.amenities && room.amenities.length > 0 && (
+            <div className="room-amenities-mini">
+              {room.amenities.slice(0, 2).map((a) => (
+                <span key={a} className="mini-amenity-tag">
+                  {a}
+                </span>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
 };
+

@@ -25,4 +25,5 @@ export interface Tenant {
     dataUrl: string;
   };
   status: 'active' | 'notice' | 'moved_out';
+  rentStatus?: 'paid' | 'pending' | 'overdue';
 }

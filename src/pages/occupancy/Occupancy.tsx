@@ -7,16 +7,22 @@ import { RoomCard } from '../../features/occupancy/components/RoomCard';
 import { AddRoomModal } from '../../features/occupancy/components/AddRoomModal';
 import { RoomModal } from '../../features/occupancy/components/RoomModal';
 import { EmptyState } from '../../components/common/EmptyState';
+import { FloorStatusBar } from '../../features/occupancy/components/FloorStatusBar';
+import type { FloorFilterType } from '../../features/occupancy/components/FloorStatusBar';
 import { useRoomStore } from '../../store/useRoomStore';
 import { usePropertyStore } from '../../store/usePropertyStore';
 import { mockTenants } from '../../data/mockTenants';
 import type { Room } from '../../types/room';
 import type { Tenant } from '../../types/tenant';
 import { TenantDrawer } from '../../features/tenants/components/TenantDrawer';
+import { DeleteRoomModal } from '../../features/occupancy/components/DeleteRoomModal';
+import { toast } from '../../store/useToastStore';
 
 export const Occupancy: React.FC = () => {
   const [selectedTenant, setSelectedTenant] = useState<Tenant | null>(null);
   const [selectedRoomForEdit, setSelectedRoomForEdit] = useState<Room | null>(null);
+  const [roomToDelete, setRoomToDelete] = useState<Room | null>(null);
+  const [floorFilter, setFloorFilter] = useState<FloorFilterType>('all');
   const { selectedProperty } = usePropertyStore();
   const {
     rooms,
@@ -24,7 +30,9 @@ export const Occupancy: React.FC = () => {
     setActiveFloor,
     openAddRoomModal,
     generateRoomsForProperty,
+    deleteRoom,
   } = useRoomStore();
+
 
   const propertyId = selectedProperty?.id || 'prop-1';
   const propertyRooms = rooms.filter((r) => r.propertyId === propertyId);
@@ -32,6 +40,12 @@ export const Occupancy: React.FC = () => {
   // Generate list of floors based on selected property
   const totalFloors = selectedProperty?.totalFloors || 3;
   const floorsList = Array.from({ length: totalFloors }, (_, i) => i + 1);
+
+  // Handle floor switch and reset status filter
+  const handleFloorChange = (floor: number) => {
+    setActiveFloor(floor);
+    setFloorFilter('all');
+  };
 
   // Filter and naturally sort rooms for current active floor by room number
   const floorRooms = propertyRooms
@@ -42,6 +56,17 @@ export const Occupancy: React.FC = () => {
         sensitivity: 'base',
       })
     );
+
+  // Filter by active status filter (all / vacant / occupied)
+  const displayedRooms = floorRooms.filter((r) => {
+    if (floorFilter === 'vacant') {
+      return (r.capacity - r.occupiedCount) > 0;
+    }
+    if (floorFilter === 'occupied') {
+      return r.occupiedCount > 0;
+    }
+    return true;
+  });
 
   // Calculate room counts per floor
   const roomCountsByFloor = propertyRooms.reduce((acc, r) => {
@@ -95,33 +120,22 @@ export const Occupancy: React.FC = () => {
       <FloorTabs
         floors={floorsList}
         activeFloor={activeFloor}
-        onSelectFloor={setActiveFloor}
+        onSelectFloor={handleFloorChange}
         roomCountsByFloor={roomCountsByFloor}
       />
 
-      {/* Active Floor Overview Stats */}
+      {/* Active Floor Overview Stats & Capacity Bar */}
       {propertyRooms.length > 0 && (
-        <div className="floor-summary-bar">
-          <div className="floor-summary-info">
-            <span className="floor-summary-title">Floor {activeFloor} Capacity:</span>
-            <span className="floor-summary-item">
-              <strong>{floorRooms.length}</strong> {floorRooms.length === 1 ? 'Room' : 'Rooms'}
-            </span>
-            <span className="floor-summary-divider">•</span>
-            <span className="floor-summary-item">
-              <strong>{totalBedsOnFloor}</strong> Total Beds
-            </span>
-            <span className="floor-summary-divider">•</span>
-            <span className="floor-summary-item text-vacant">
-              <strong>{vacantBedsOnFloor}</strong> Vacant Beds
-            </span>
-            <span className="floor-summary-divider">•</span>
-            <span className="floor-summary-item text-occupied">
-              <strong>{occupiedBedsOnFloor}</strong> Occupied Beds
-            </span>
-          </div>
-
-        </div>
+        <FloorStatusBar
+          floorNumber={activeFloor}
+          totalRooms={floorRooms.length}
+          totalBeds={totalBedsOnFloor}
+          occupiedBeds={occupiedBedsOnFloor}
+          vacantBeds={vacantBedsOnFloor}
+          activeFilter={floorFilter}
+          onFilterChange={setFloorFilter}
+          onAddRoom={openAddRoomModal}
+        />
       )}
 
       {/* Rooms Grid / Empty State */}
@@ -155,13 +169,29 @@ export const Occupancy: React.FC = () => {
             </Button>
           }
         />
+      ) : displayedRooms.length === 0 ? (
+        <div className="filter-empty-state">
+          <div className="filter-empty-icon">
+            <BedDouble size={28} />
+          </div>
+          <h4>No {floorFilter === 'vacant' ? 'vacant' : 'occupied'} rooms found on Floor {activeFloor}</h4>
+          <p>
+            {floorFilter === 'vacant'
+              ? `All rooms on Floor ${activeFloor} are currently at 100% full capacity.`
+              : `All rooms on Floor ${activeFloor} currently have zero active tenants.`}
+          </p>
+          <Button variant="secondary" onClick={() => setFloorFilter('all')}>
+            Show All {floorRooms.length} Rooms on Floor {activeFloor}
+          </Button>
+        </div>
       ) : (
         <div className="rooms-grid">
-          {floorRooms.map((room) => (
+          {displayedRooms.map((room) => (
             <RoomCard
               key={room.id}
               room={room}
               onClick={setSelectedRoomForEdit}
+              onDeleteClick={setRoomToDelete}
               onOccupiedBedClick={handleOccupiedBedClick}
             />
           ))}
@@ -178,6 +208,21 @@ export const Occupancy: React.FC = () => {
         room={selectedRoomForEdit}
       />
 
+      {/* Delete Room Confirmation Modal Popup */}
+      <DeleteRoomModal
+        room={roomToDelete}
+        isOpen={Boolean(roomToDelete)}
+        onClose={() => setRoomToDelete(null)}
+        onConfirm={(room) => {
+          deleteRoom(room.id);
+          setRoomToDelete(null);
+          toast.info(
+            `Room ${room.roomNumber} Deleted`,
+            `Floor ${room.floor} • ${room.capacity} beds removed`
+          );
+        }}
+      />
+
       <TenantDrawer
         isOpen={Boolean(selectedTenant)}
         onClose={() => setSelectedTenant(null)}
@@ -186,3 +231,4 @@ export const Occupancy: React.FC = () => {
     </div>
   );
 };
+
