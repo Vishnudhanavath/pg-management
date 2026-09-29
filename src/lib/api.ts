@@ -11,6 +11,7 @@ export interface RegisterPayload {
   mobile_number: string;
   email: string;
   password: string;
+  role?: string;
 }
 
 export interface LoginPayload {
@@ -191,4 +192,3 @@ export const authApi = {
     return apiRequest('/auth/me', 'GET', null, true);
   },
 };
-

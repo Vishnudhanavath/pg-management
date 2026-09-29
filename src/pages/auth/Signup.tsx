@@ -11,6 +11,7 @@ import {
   ArrowRight,
   ShieldCheck,
   CheckCircle2,
+  ChevronDown,
   Sparkles,
   Zap,
 } from 'lucide-react';
@@ -19,6 +20,7 @@ import { CelestialBackground } from './CelestialBackground';
 import './auth.css';
 
 import { toast } from '../../store/useToastStore';
+import type { UserRole } from '../../types/auth';
 
 interface SignupProps {
   onSuccess?: () => void;
@@ -31,7 +33,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin }) 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
-  const [propertyName, setPropertyName] = useState('');
+  const [role, setRole] = useState<UserRole>('owner');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
@@ -48,7 +50,7 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin }) 
       name,
       email,
       phone,
-      propertyName: propertyName || 'My New PG Branch',
+      role,
       password,
     });
 
@@ -173,22 +175,23 @@ export const Signup: React.FC<SignupProps> = ({ onSuccess, onNavigateToLogin }) 
 
           <form onSubmit={handleSubmit} className="auth-form" autoComplete="off">
             <div className="auth-input-group">
-              <label htmlFor="pg-name" className="auth-input-label">
-                PG / Hostel Property Name
+              <label htmlFor="signup-role" className="auth-input-label">
+                Role
               </label>
               <div className="auth-input-wrapper">
-                <Building2 size={16} className="auth-input-icon" />
-                <input
-                  id="pg-name"
-                  type="text"
-                  placeholder="e.g. Sri Venkateswara Luxury PG"
-                  value={propertyName}
-                  onChange={(e) => setPropertyName(e.target.value)}
-                  required
-                  autoComplete="off"
+                <ShieldCheck size={16} className="auth-input-icon" />
+                <select
+                  id="signup-role"
+                  value={role}
+                  onChange={(e) => setRole(e.target.value as UserRole)}
                   className="auth-input"
-                  autoFocus
-                />
+                  aria-label="Select role"
+                >
+                  <option value="owner">Owner</option>
+                  <option value="manager">Manager</option>
+                  <option value="staff">Staff</option>
+                </select>
+                <ChevronDown size={17} className="auth-select-chevron" aria-hidden="true" />
               </div>
             </div>
 

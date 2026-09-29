@@ -41,7 +41,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath = '/dashboard', on
   const { user, logout } = useAuthStore();
   const { isSidebarOpen, closeDrawer } = useUIStore();
   const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'P';
-  const roleLabel = user?.role === 'owner' ? 'Owner' : user?.role === 'manager' ? 'Warden' : 'Resident';
+  const roleLabel = user?.role === 'owner' ? 'Owner' : user?.role === 'manager' ? 'Manager' : user?.role === 'staff' || user?.role === 'warden' ? 'Staff' : 'Resident';
 
   const handleNavClick = (path: string) => {
     onNavigate?.(path);
@@ -103,4 +103,3 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath = '/dashboard', on
     </aside>
   );
 };
-

@@ -1,4 +1,4 @@
-export type UserRole = 'owner' | 'manager' | 'warden' | 'resident';
+export type UserRole = 'owner' | 'manager' | 'staff' | 'warden' | 'resident';
 
 export interface User {
   id: string;
@@ -20,6 +20,6 @@ export interface SignupCredentials {
   name: string;
   email: string;
   phone: string;
-  propertyName: string;
+  role: UserRole;
   password: string;
 }

@@ -58,10 +58,13 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 12px 8px 16px;
+  padding: 32px 16px 24px;
   position: relative;
   z-index: 2;
   flex-shrink: 0;
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
 }
 
 .auth-hero-brand {
@@ -138,14 +141,19 @@
   50% { opacity: 0.4; transform: scale(0.75); }
 }
 
-/* On Mobile, hide the heavy desktop marketing elements to keep login lightning-focused */
-.auth-hero-title,
-.auth-hero-desc,
-.auth-hero-features,
-.auth-hero-stats,
-.auth-hero-footer {
-  display: none;
+
+/* Mobile Overrides for Marketing Elements */
+@media (max-width: 1023px) {
+  .auth-hero-title { font-size: 1.7rem; text-align: center; margin-top: 16px; }
+  .auth-hero-desc { text-align: center; font-size: 0.85rem; margin-bottom: 24px; }
+  .auth-hero-features { gap: 16px; margin-bottom: 32px; }
+  .auth-feature-card { flex-direction: column; text-align: center; padding: 20px 16px; }
+  .auth-feature-card::after { display: none; }
+  .auth-feature-header-row { justify-content: center; flex-direction: column; gap: 4px; margin-bottom: 8px; }
+  .auth-hero-footer { padding-bottom: 24px; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .auth-hero-stats { justify-content: center; flex-wrap: wrap; }
 }
+
 
 /* =========================================================
    Mobile Form Container & Glass Card
@@ -159,6 +167,7 @@
   position: relative;
   z-index: 2;
   flex: 1;
+  padding: 0 16px 40px;
 }
 
 .auth-cool-card {
@@ -331,6 +340,41 @@
   background-color: rgba(255, 255, 255, 0.08);
   border-color: #818cf8;
   box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), 0 0 16px rgba(99, 102, 241, 0.2);
+}
+
+/* Polished role selector, aligned with the dark auth theme. */
+select.auth-input {
+  cursor: pointer;
+  appearance: none;
+  padding-right: 44px;
+  background-image: linear-gradient(90deg, rgba(99, 102, 241, 0.03), rgba(99, 102, 241, 0.13));
+}
+
+select.auth-input:hover {
+  border-color: rgba(129, 140, 248, 0.56);
+  background-color: rgba(99, 102, 241, 0.11);
+}
+
+select.auth-input:focus {
+  background-color: rgba(99, 102, 241, 0.13);
+}
+
+.auth-select-chevron {
+  position: absolute;
+  right: 14px;
+  color: #a5b4fc;
+  pointer-events: none;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.auth-input-wrapper:focus-within .auth-select-chevron {
+  color: #c7d2fe;
+  transform: translateY(1px);
+}
+
+select.auth-input option {
+  color: #ffffff;
+  background-color: #172033;
 }
 
 /* Chrome / Safari / Edge / Firefox Autofill: Prevent browser from turning input white */
@@ -804,6 +848,316 @@
   justify-content: center;
 }
 
+
+/* Reveal desktop marketing elements */
+.auth-hero-title {
+  display: block;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: clamp(1.4rem, 1.8vw, 1.95rem);
+  font-weight: 800;
+  line-height: 1.2;
+  letter-spacing: -0.035em;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.auth-hero-title span {
+  background: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.auth-hero-desc {
+  display: block;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+  margin-bottom: 12px;
+}
+
+/* Desktop Feature Cards Showcase */
+.auth-hero-features {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  margin-bottom: 14px;
+  width: 100%;
+}
+
+.auth-feature-card {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(15, 23, 42, 0.6) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px 14px;
+  border-radius: 13px;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.06);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: default;
+}
+
+/* Shimmer gradient line on top edge */
+.auth-feature-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+  opacity: 0.6;
+  transition: opacity 0.25s ease;
+}
+
+.auth-feature-card:hover {
+  transform: translateX(4px);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(15, 23, 42, 0.75) 100%);
+  box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+.auth-feature-card:hover::before {
+  opacity: 1;
+}
+
+/* Left accent borders */
+.auth-feature-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  border-radius: 4px 0 0 4px;
+  opacity: 0.85;
+  transition: opacity 0.2s ease, width 0.2s ease;
+}
+
+.auth-feature-card:hover::after {
+  opacity: 1;
+  width: 4px;
+}
+
+/* Card 1 / Indigo variant */
+.auth-feature-card:nth-child(1),
+.auth-feature-card-indigo {
+  border-color: rgba(99, 102, 241, 0.2);
+}
+.auth-feature-card:nth-child(1)::after,
+.auth-feature-card-indigo::after {
+  background: linear-gradient(180deg, #818cf8, #4f46e5);
+}
+.auth-feature-card:nth-child(1):hover,
+.auth-feature-card-indigo:hover {
+  border-color: rgba(129, 140, 248, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Card 2 / Cyan variant */
+.auth-feature-card:nth-child(2),
+.auth-feature-card-cyan {
+  border-color: rgba(14, 165, 233, 0.2);
+}
+.auth-feature-card:nth-child(2)::after,
+.auth-feature-card-cyan::after {
+  background: linear-gradient(180deg, #38bdf8, #0284c7);
+}
+.auth-feature-card:nth-child(2):hover,
+.auth-feature-card-cyan:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(14, 165, 233, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Card 3 / Emerald variant */
+.auth-feature-card:nth-child(3),
+.auth-feature-card-emerald {
+  border-color: rgba(16, 185, 129, 0.2);
+}
+.auth-feature-card:nth-child(3)::after,
+.auth-feature-card-emerald::after {
+  background: linear-gradient(180deg, #34d399, #059669);
+}
+.auth-feature-card:nth-child(3):hover,
+.auth-feature-card-emerald:hover {
+  border-color: rgba(52, 211, 153, 0.45);
+  box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+}
+
+/* Icon Box Styling */
+.auth-feature-icon-box {
+  width: 38px;
+  height: 38px;
+  min-width: 38px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.auth-feature-card:hover .auth-feature-icon-box {
+  transform: scale(1.1) rotate(-3deg);
+}
+
+.auth-feature-card:nth-child(1) .auth-feature-icon-box,
+.auth-feature-card-indigo .auth-feature-icon-box {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(67, 56, 202, 0.45) 100%);
+  border: 1px solid rgba(165, 180, 252, 0.35);
+  color: #c7d2fe;
+  box-shadow: 0 0 14px rgba(99, 102, 241, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.auth-feature-card:nth-child(2) .auth-feature-icon-box,
+.auth-feature-card-cyan .auth-feature-icon-box {
+  background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(2, 132, 199, 0.45) 100%);
+  border: 1px solid rgba(125, 211, 252, 0.35);
+  color: #bae6fd;
+  box-shadow: 0 0 14px rgba(14, 165, 233, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+.auth-feature-card:nth-child(3) .auth-feature-icon-box,
+.auth-feature-card-emerald .auth-feature-icon-box {
+  background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.45) 100%);
+  border: 1px solid rgba(110, 231, 183, 0.35);
+  color: #a7f3d0;
+  box-shadow: 0 0 14px rgba(16, 185, 129, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+}
+
+/* Body & Typography */
+.auth-feature-body {
+  flex: 1;
+  min-width: 0;
+}
+
+.auth-feature-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 2px;
+}
+
+.auth-feature-title {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: -0.015em;
+}
+
+.auth-feature-desc {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.77rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+}
+
+/* Feature Pill Micro-Badges */
+.auth-feature-pill {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  line-height: 1.2;
+}
+
+.auth-feature-pill-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background-color: #34d399;
+  box-shadow: 0 0 6px #34d399;
+  animation: pulseDot 2s infinite;
+  display: inline-block;
+}
+
+.auth-feature-pill-emerald {
+  background: rgba(16, 185, 129, 0.16);
+  color: #6ee7b7;
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
+}
+
+.auth-feature-pill-cyan {
+  background: rgba(14, 165, 233, 0.16);
+  color: #7dd3fc;
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  box-shadow: 0 0 8px rgba(14, 165, 233, 0.15);
+}
+
+.auth-feature-pill-violet {
+  background: rgba(168, 85, 247, 0.16);
+  color: #d8b4fe;
+  border: 1px solid rgba(192, 132, 252, 0.35);
+  box-shadow: 0 0 8px rgba(168, 85, 247, 0.15);
+}
+
+/* Desktop Stats Ticker */
+.auth-hero-stats {
+  display: flex;
+  gap: 14px;
+  padding-top: 10px;
+  margin-top: 4px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.auth-hero-stat-item h5 {
+  font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 0;
+  letter-spacing: -0.03em;
+  text-shadow: 0 0 12px rgba(99, 102, 241, 0.45);
+}
+
+.auth-hero-stat-item p {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.65rem;
+  color: #94a3b8;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Desktop Footer */
+.auth-hero-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 0.72rem;
+  color: #64748b;
+  padding-top: 6px;
+}
+
+.auth-hero-footer a {
+  color: #94a3b8;
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+.auth-hero-footer a:hover {
+  color: #ffffff;
+}
+
+
 /* =========================================================
    2. TABLET ENHANCEMENT (min-width: 640px)
    ========================================================= */
@@ -828,7 +1182,7 @@
     flex-direction: row;
     height: 100vh;
     max-height: 100vh;
-    overflow: hidden !important;
+    overflow-y: auto !important;
     padding: 0;
   }
 
@@ -846,7 +1200,7 @@
     height: 100vh;
     max-height: 100vh;
     box-sizing: border-box;
-    overflow: hidden !important;
+    overflow-y: auto !important;
   }
 
   .auth-hero-brand {
@@ -868,321 +1222,13 @@
     max-width: 500px;
   }
 
-  /* Reveal desktop marketing elements */
-  .auth-hero-title {
-    display: block;
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: clamp(1.4rem, 1.8vw, 1.95rem);
-    font-weight: 800;
-    line-height: 1.2;
-    letter-spacing: -0.035em;
-    color: #ffffff;
-    margin-bottom: 6px;
-  }
-
-  .auth-hero-title span {
-    background: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .auth-hero-desc {
-    display: block;
-    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.82rem;
-    color: #94a3b8;
-    line-height: 1.45;
-    letter-spacing: -0.01em;
-    margin-bottom: 12px;
-  }
-
-  /* Desktop Feature Cards Showcase */
-  .auth-hero-features {
-    display: flex;
-    flex-direction: column;
-    gap: 9px;
-    margin-bottom: 14px;
-    width: 100%;
-  }
-
-  .auth-feature-card {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(15, 23, 42, 0.6) 100%);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    padding: 10px 14px;
-    border-radius: 13px;
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.06);
-    position: relative;
-    overflow: hidden;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: default;
-  }
-
-  /* Shimmer gradient line on top edge */
-  .auth-feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
-    opacity: 0.6;
-    transition: opacity 0.25s ease;
-  }
-
-  .auth-feature-card:hover {
-    transform: translateX(4px);
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(15, 23, 42, 0.75) 100%);
-    box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  }
-
-  .auth-feature-card:hover::before {
-    opacity: 1;
-  }
-
-  /* Left accent borders */
-  .auth-feature-card::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    width: 3px;
-    border-radius: 4px 0 0 4px;
-    opacity: 0.85;
-    transition: opacity 0.2s ease, width 0.2s ease;
-  }
-
-  .auth-feature-card:hover::after {
-    opacity: 1;
-    width: 4px;
-  }
-
-  /* Card 1 / Indigo variant */
-  .auth-feature-card:nth-child(1),
-  .auth-feature-card-indigo {
-    border-color: rgba(99, 102, 241, 0.2);
-  }
-  .auth-feature-card:nth-child(1)::after,
-  .auth-feature-card-indigo::after {
-    background: linear-gradient(180deg, #818cf8, #4f46e5);
-  }
-  .auth-feature-card:nth-child(1):hover,
-  .auth-feature-card-indigo:hover {
-    border-color: rgba(129, 140, 248, 0.45);
-    box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  }
-
-  /* Card 2 / Cyan variant */
-  .auth-feature-card:nth-child(2),
-  .auth-feature-card-cyan {
-    border-color: rgba(14, 165, 233, 0.2);
-  }
-  .auth-feature-card:nth-child(2)::after,
-  .auth-feature-card-cyan::after {
-    background: linear-gradient(180deg, #38bdf8, #0284c7);
-  }
-  .auth-feature-card:nth-child(2):hover,
-  .auth-feature-card-cyan:hover {
-    border-color: rgba(56, 189, 248, 0.45);
-    box-shadow: 0 8px 24px -4px rgba(14, 165, 233, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  }
-
-  /* Card 3 / Emerald variant */
-  .auth-feature-card:nth-child(3),
-  .auth-feature-card-emerald {
-    border-color: rgba(16, 185, 129, 0.2);
-  }
-  .auth-feature-card:nth-child(3)::after,
-  .auth-feature-card-emerald::after {
-    background: linear-gradient(180deg, #34d399, #059669);
-  }
-  .auth-feature-card:nth-child(3):hover,
-  .auth-feature-card-emerald:hover {
-    border-color: rgba(52, 211, 153, 0.45);
-    box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  }
-
-  /* Icon Box Styling */
-  .auth-feature-icon-box {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    border-radius: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-  }
-
-  .auth-feature-card:hover .auth-feature-icon-box {
-    transform: scale(1.1) rotate(-3deg);
-  }
-
-  .auth-feature-card:nth-child(1) .auth-feature-icon-box,
-  .auth-feature-card-indigo .auth-feature-icon-box {
-    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(67, 56, 202, 0.45) 100%);
-    border: 1px solid rgba(165, 180, 252, 0.35);
-    color: #c7d2fe;
-    box-shadow: 0 0 14px rgba(99, 102, 241, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-  }
-
-  .auth-feature-card:nth-child(2) .auth-feature-icon-box,
-  .auth-feature-card-cyan .auth-feature-icon-box {
-    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(2, 132, 199, 0.45) 100%);
-    border: 1px solid rgba(125, 211, 252, 0.35);
-    color: #bae6fd;
-    box-shadow: 0 0 14px rgba(14, 165, 233, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-  }
-
-  .auth-feature-card:nth-child(3) .auth-feature-icon-box,
-  .auth-feature-card-emerald .auth-feature-icon-box {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.45) 100%);
-    border: 1px solid rgba(110, 231, 183, 0.35);
-    color: #a7f3d0;
-    box-shadow: 0 0 14px rgba(16, 185, 129, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
-  }
-
-  /* Body & Typography */
-  .auth-feature-body {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .auth-feature-header-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px;
-    margin-bottom: 2px;
-  }
-
-  .auth-feature-title {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: #ffffff;
-    letter-spacing: -0.015em;
-  }
-
-  .auth-feature-desc {
-    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.77rem;
-    color: #94a3b8;
-    line-height: 1.45;
-    letter-spacing: -0.005em;
-  }
-
-  /* Feature Pill Micro-Badges */
-  .auth-feature-pill {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.62rem;
-    font-weight: 700;
-    padding: 2px 7px;
-    border-radius: 9999px;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    white-space: nowrap;
-    backdrop-filter: blur(8px);
-    line-height: 1.2;
-  }
-
-  .auth-feature-pill-dot {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background-color: #34d399;
-    box-shadow: 0 0 6px #34d399;
-    animation: pulseDot 2s infinite;
-    display: inline-block;
-  }
-
-  .auth-feature-pill-emerald {
-    background: rgba(16, 185, 129, 0.16);
-    color: #6ee7b7;
-    border: 1px solid rgba(52, 211, 153, 0.35);
-    box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
-  }
-
-  .auth-feature-pill-cyan {
-    background: rgba(14, 165, 233, 0.16);
-    color: #7dd3fc;
-    border: 1px solid rgba(56, 189, 248, 0.35);
-    box-shadow: 0 0 8px rgba(14, 165, 233, 0.15);
-  }
-
-  .auth-feature-pill-violet {
-    background: rgba(168, 85, 247, 0.16);
-    color: #d8b4fe;
-    border: 1px solid rgba(192, 132, 252, 0.35);
-    box-shadow: 0 0 8px rgba(168, 85, 247, 0.15);
-  }
-
-  /* Desktop Stats Ticker */
-  .auth-hero-stats {
-    display: flex;
-    gap: 14px;
-    padding-top: 10px;
-    margin-top: 4px;
-    border-top: 1px solid rgba(255, 255, 255, 0.08);
-  }
-
-  .auth-hero-stat-item h5 {
-    font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: #ffffff;
-    margin-bottom: 0;
-    letter-spacing: -0.03em;
-    text-shadow: 0 0 12px rgba(99, 102, 241, 0.45);
-  }
-
-  .auth-hero-stat-item p {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: 0.65rem;
-    color: #94a3b8;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-
-  /* Desktop Footer */
-  .auth-hero-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    font-size: 0.72rem;
-    color: #64748b;
-    padding-top: 6px;
-  }
-
-  .auth-hero-footer a {
-    color: #94a3b8;
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .auth-hero-footer a:hover {
-    color: #ffffff;
-  }
-
   /* Desktop Form Column */
   .auth-form-panel {
     flex: 1;
     height: 100vh;
     max-height: 100vh;
     padding: clamp(14px, 2vh, 24px) clamp(18px, 3vw, 36px);
-    overflow: hidden !important;
+    overflow-y: auto !important;
   }
 
   .auth-cool-card {

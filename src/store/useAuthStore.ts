@@ -97,7 +97,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
 
         localStorage.setItem(STORAGE_KEY, JSON.stringify(user));
         set({ user, isAuthenticated: true, isLoading: false });
-        toast.success(`Welcome back, ${user.name}!`, 'Signed in successfully via API.');
+        toast.success(`Welcome back, ${user.name}!`, 'Signed in successfully via email.');
         return true;
       }
     } catch (err: any) {
@@ -190,6 +190,7 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
         mobile_number: credentials.phone || '',
         email: credentials.email,
         password: credentials.password,
+        role: credentials.role,
       };
 
       const result = await authApi.register(payload);
@@ -204,8 +205,8 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
         name: credentials.name,
         email: credentials.email,
         phone: credentials.phone,
-        role: 'owner',
-        propertyName: credentials.propertyName || 'My New PG Property',
+        role: credentials.role || 'owner',
+        propertyName: 'My New PG Property',
         avatar: credentials.name.charAt(0).toUpperCase(),
       };
 
@@ -221,8 +222,8 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
           name: credentials.name,
           email: credentials.email,
           phone: credentials.phone,
-          role: 'owner',
-          propertyName: credentials.propertyName || 'My New PG Property',
+          role: credentials.role || 'owner',
+          propertyName: 'My New PG Property',
           avatar: credentials.name.charAt(0).toUpperCase(),
         };
 
@@ -259,4 +260,3 @@ export const useAuthStore = create<AuthStoreState>((set, get) => ({
     toast.success('Profile updated');
   },
 }));
-
