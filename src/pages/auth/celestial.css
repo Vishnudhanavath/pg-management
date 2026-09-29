@@ -1,0 +1,268 @@
+/* =========================================================
+   MANA P.G - 3D Celestial Universe System
+   Interactive 3D Canvas Starfield • 3D Volumetric Moon • Meteors
+   True Parallax Depth • 60 FPS • Full-Page Responsive
+   ========================================================= */
+
+.celestial-universe-3d {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+  background-color: #040711;
+  background-image:
+    radial-gradient(circle at 15% 25%, rgba(99, 102, 241, 0.18) 0%, transparent 50%),
+    radial-gradient(circle at 85% 20%, rgba(168, 85, 247, 0.16) 0%, transparent 45%),
+    radial-gradient(circle at 75% 85%, rgba(14, 165, 233, 0.14) 0%, transparent 50%);
+}
+
+/* Fullscreen 3D Depth Canvas */
+.celestial-canvas-3d {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  z-index: 1;
+}
+
+/* =========================================================
+   1. 3D COSMIC NEBULAE
+   ========================================================= */
+
+.celestial-nebula-3d {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(75px);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.7;
+  mix-blend-mode: screen;
+}
+
+.nebula-indigo {
+  top: -120px;
+  left: -80px;
+  width: 550px;
+  height: 550px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.32) 0%, rgba(67, 56, 202, 0.14) 50%, transparent 70%);
+  animation: cosmicDrift1 22s ease-in-out infinite alternate;
+}
+
+.nebula-cyan {
+  bottom: -100px;
+  right: -60px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, rgba(14, 165, 233, 0.25) 0%, rgba(2, 132, 199, 0.1) 50%, transparent 70%);
+  animation: cosmicDrift2 26s ease-in-out infinite alternate-reverse;
+}
+
+.nebula-violet {
+  top: 30%;
+  right: 20%;
+  width: 440px;
+  height: 440px;
+  background: radial-gradient(circle, rgba(168, 85, 247, 0.2) 0%, rgba(126, 34, 206, 0.08) 50%, transparent 70%);
+  animation: cosmicDrift1 30s ease-in-out infinite alternate;
+}
+
+@keyframes cosmicDrift1 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(30px, 25px, 0) scale(1.1);
+  }
+
+  100% {
+    transform: translate3d(-20px, 40px, 0) scale(0.95);
+  }
+}
+
+@keyframes cosmicDrift2 {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  50% {
+    transform: translate3d(-25px, -30px, 0) scale(1.12);
+  }
+
+  100% {
+    transform: translate3d(35px, -15px, 0) scale(0.92);
+  }
+}
+
+/* =========================================================
+   2. VOLUMETRIC 3D MOON STAGE
+   ========================================================= */
+
+.celestial-moon-3d-stage {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  width: 68px;
+  height: 68px;
+  z-index: 2;
+  transition: transform 0.18s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-style: preserve-3d;
+  will-change: transform;
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+/* Desktop Scale & Placement */
+@media (min-width: 1024px) {
+  .celestial-moon-3d-stage {
+    top: 28px;
+    right: 5%;
+    width: 136px;
+    height: 136px;
+  }
+}
+
+/* Hover elevation on the moon */
+.celestial-moon-3d-stage:hover .moon-3d-sphere {
+  transform: scale(1.06) translateY(-4px);
+  filter: drop-shadow(0 0 35px rgba(165, 180, 252, 0.85));
+}
+
+.celestial-moon-3d-stage:hover .moon-3d-outer-corona {
+  opacity: 1;
+  transform: scale(1.15);
+}
+
+/* Outer Radiating Aura */
+.moon-3d-outer-corona {
+  position: absolute;
+  inset: -45px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(165, 180, 252, 0.28) 0%, rgba(99, 102, 241, 0.15) 45%, transparent 75%);
+  filter: blur(32px);
+  animation: coronaPulse 5s ease-in-out infinite alternate;
+  pointer-events: none;
+  transition: all 0.3s ease;
+}
+
+/* Inner Atmospheric Corona */
+.moon-3d-inner-corona {
+  position: absolute;
+  inset: -18px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.45) 0%, rgba(199, 210, 254, 0.3) 50%, transparent 80%);
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+/* Rim Light Halo */
+.moon-3d-atmospheric-rim {
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 255, 255, 0.6) 0%, rgba(165, 180, 252, 0.3) 60%, transparent 85%);
+  filter: blur(5px);
+  pointer-events: none;
+}
+
+@keyframes coronaPulse {
+  0% {
+    opacity: 0.65;
+    transform: scale(0.92);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1.12);
+  }
+}
+
+/* 3D Spherical Moon Body with Perpetual Levitation */
+.moon-3d-sphere {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  animation: moonFloat3D 12s ease-in-out infinite alternate;
+  filter: drop-shadow(0 0 24px rgba(129, 140, 248, 0.75));
+  transition: all 0.3s ease;
+}
+
+@keyframes moonFloat3D {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-9px) rotate(2deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
+
+.moon-3d-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+
+/* Diamond Star Glint on Moon Horn */
+.moon-horn-glint {
+  position: absolute;
+  top: 15%;
+  left: 62%;
+  width: 7px;
+  height: 7px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 12px 3px #ffffff, 0 0 24px 6px #818cf8;
+  animation: glintSparkle3D 2.8s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes glintSparkle3D {
+
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.45);
+    box-shadow: 0 0 16px 5px #ffffff, 0 0 32px 10px #c7d2fe;
+  }
+}
+
+/* Translucent Drifting Mist */
+.moon-translucent-wisp {
+  position: absolute;
+  bottom: 10%;
+  left: -20%;
+  width: 140%;
+  height: 26px;
+  background: radial-gradient(ellipse at center, rgba(199, 210, 254, 0.22) 0%, rgba(99, 102, 241, 0.1) 50%, transparent 80%);
+  border-radius: 50%;
+  filter: blur(8px);
+  animation: mistFlow 9s ease-in-out infinite alternate;
+  pointer-events: none;
+}
+
+@keyframes mistFlow {
+  0% {
+    transform: translateX(-8px) scaleY(0.85);
+    opacity: 0.45;
+  }
+
+  100% {
+    transform: translateX(10px) scaleY(1.2);
+    opacity: 0.9;
+  }
+}

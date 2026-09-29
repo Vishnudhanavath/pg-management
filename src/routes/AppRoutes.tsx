@@ -9,9 +9,39 @@ import { Expenses } from '../pages/expenses/Expenses';
 import { Maintenance } from '../pages/maintenance/Maintenance';
 import { Reports } from '../pages/reports/Reports';
 import { Settings } from '../pages/settings/Settings';
+import { Login } from '../pages/auth/Login';
+import { Signup } from '../pages/auth/Signup';
+import { useAuthStore } from '../store/useAuthStore';
+import { ToastContainer } from '../components/common/ToastContainer';
 
 export const AppRoutes: React.FC = () => {
-  const [currentPath, setCurrentPath] = useState('/dashboard');
+  const { isAuthenticated } = useAuthStore();
+  const [currentPath, setCurrentPath] = useState(isAuthenticated ? '/dashboard' : '/login');
+
+  // If user is not authenticated, show auth screens
+  if (!isAuthenticated) {
+    if (currentPath === '/signup') {
+      return (
+        <>
+          <Signup
+            onNavigateToLogin={() => setCurrentPath('/login')}
+            onSuccess={() => setCurrentPath('/dashboard')}
+          />
+          <ToastContainer />
+        </>
+      );
+    }
+
+    return (
+      <>
+        <Login
+          onNavigateToSignup={() => setCurrentPath('/signup')}
+          onSuccess={() => setCurrentPath('/dashboard')}
+        />
+        <ToastContainer />
+      </>
+    );
+  }
 
   const renderPage = () => {
     switch (currentPath) {
@@ -44,3 +74,4 @@ export const AppRoutes: React.FC = () => {
     </AppLayout>
   );
 };
+

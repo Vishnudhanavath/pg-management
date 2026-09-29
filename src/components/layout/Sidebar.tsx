@@ -9,7 +9,10 @@ import {
   Wrench,
   BarChart3,
   Settings,
+  LogOut,
 } from 'lucide-react';
+import { useAuthStore } from '../../store/useAuthStore';
+import { useUIStore } from '../../store/useUIStore';
 
 export interface SidebarProps {
   currentPath?: string;
@@ -35,8 +38,20 @@ const NAV_ITEMS: NavItem[] = [
 ];
 
 export const Sidebar: React.FC<SidebarProps> = ({ currentPath = '/dashboard', onNavigate }) => {
+  const { user, logout } = useAuthStore();
+  const { isSidebarOpen, closeDrawer } = useUIStore();
+  const userInitial = user?.name ? user.name.charAt(0).toUpperCase() : 'P';
+  const roleLabel = user?.role === 'owner' ? 'Owner' : user?.role === 'manager' ? 'Warden' : 'Resident';
+
+  const handleNavClick = (path: string) => {
+    onNavigate?.(path);
+    if (window.innerWidth < 768) {
+      closeDrawer();
+    }
+  };
+
   return (
-    <aside className="sidebar">
+    <aside className={`sidebar ${isSidebarOpen ? 'mobile-open' : ''}`}>
       <div className="sidebar-brand">
         <div className="brand-logo-wrapper">
           <Building2 size={22} className="brand-icon" />
@@ -54,7 +69,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath = '/dashboard', on
                 <button
                   type="button"
                   className={`sidebar-nav-item ${isActive ? 'active' : ''}`}
-                  onClick={() => onNavigate?.(item.path)}
+                  onClick={() => handleNavClick(item.path)}
                 >
                   <Icon size={18} className="sidebar-nav-icon" />
                   <span>{item.label}</span>
@@ -64,6 +79,28 @@ export const Sidebar: React.FC<SidebarProps> = ({ currentPath = '/dashboard', on
           })}
         </ul>
       </nav>
+
+      <div className="sidebar-footer">
+        <div className="sidebar-user-card">
+          <div className="sidebar-user-avatar">{userInitial}</div>
+          <div className="sidebar-user-info">
+            <span className="sidebar-user-name" title={user?.name || 'PG Manager'}>
+              {user?.name || 'PG Manager'}
+            </span>
+            <span className="sidebar-user-role">{roleLabel}</span>
+          </div>
+          <button
+            type="button"
+            className="sidebar-logout-btn"
+            onClick={() => logout()}
+            title="Sign Out"
+            aria-label="Sign Out"
+          >
+            <LogOut size={16} />
+          </button>
+        </div>
+      </div>
     </aside>
   );
 };
+

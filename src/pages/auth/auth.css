@@ -1,0 +1,1209 @@
+/* =========================================================
+   MANA P.G - Pure Mobile-First Authentication System
+   100% Mobile-First • iOS & Android HIG Compliant
+   Zero Unwanted Scrollbars • Desktop Progressive Enhancement
+   ========================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+@import './celestial.css';
+
+/* Suppress ugly scrollbars across all browsers */
+* {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+  -webkit-tap-highlight-color: transparent;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
+}
+
+/* =========================================================
+   1. BASE MOBILE STYLES (Default for all screens < 1024px)
+   ========================================================= */
+
+.auth-page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh; /* Dynamic mobile viewport height (accounts for address bar) */
+  width: 100vw;
+  max-width: 100vw;
+  background-color: #060913;
+  color: #f8fafc;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  box-sizing: border-box;
+  padding: max(16px, env(safe-area-inset-top)) max(14px, env(safe-area-inset-right)) max(24px, env(safe-area-inset-bottom)) max(14px, env(safe-area-inset-left));
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  position: relative;
+}
+
+/* Glowing Ambient Floating Orbs */
+.auth-ambient-orb-1,
+.auth-ambient-orb-2 {
+  display: none !important;
+}
+
+/* Mobile Brand Header Bar (Top of Screen on Mobile) */
+.auth-hero-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 12px 8px 16px;
+  position: relative;
+  z-index: 2;
+  flex-shrink: 0;
+}
+
+.auth-hero-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.auth-hero-logo-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  box-shadow: 0 0 16px rgba(99, 102, 241, 0.45), inset 0 1px 1px rgba(255, 255, 255, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  flex-shrink: 0;
+}
+
+.auth-hero-brand-name {
+  font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  background: linear-gradient(120deg, #ffffff 30%, #c7d2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.15;
+}
+
+.auth-hero-brand-tag {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  font-size: 0.68rem;
+  color: #818cf8;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Live Mobile Tag */
+.auth-hero-pill {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(129, 140, 248, 0.35);
+  padding: 3px 10px;
+  border-radius: 9999px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #c7d2fe;
+  margin-bottom: 6px;
+  backdrop-filter: blur(8px);
+  letter-spacing: -0.005em;
+}
+
+.auth-hero-pill-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: #34d399;
+  box-shadow: 0 0 8px #34d399;
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.75); }
+}
+
+/* On Mobile, hide the heavy desktop marketing elements to keep login lightning-focused */
+.auth-hero-title,
+.auth-hero-desc,
+.auth-hero-features,
+.auth-hero-stats,
+.auth-hero-footer {
+  display: none;
+}
+
+/* =========================================================
+   Mobile Form Container & Glass Card
+   ========================================================= */
+.auth-form-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  position: relative;
+  z-index: 2;
+  flex: 1;
+}
+
+.auth-cool-card {
+  width: 100%;
+  max-width: 440px;
+  background: rgba(12, 18, 34, 0.72);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 22px 18px;
+  box-shadow: 0 20px 50px -10px rgba(0, 0, 0, 0.75), 0 0 35px rgba(99, 102, 241, 0.18), inset 0 1px 1px rgba(255, 255, 255, 0.1);
+  position: relative;
+  margin: 0 auto;
+  box-sizing: border-box;
+}
+
+/* Neon Top Accent Sheen */
+.auth-cool-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 20%;
+  right: 20%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, #818cf8, #38bdf8, transparent);
+  border-radius: 9999px;
+  pointer-events: none;
+}
+
+/* Card Header */
+.auth-card-header {
+  margin-bottom: 14px;
+  text-align: left;
+}
+
+.auth-card-top-badge {
+  font-family: 'Plus Jakarta Sans', -apple-system, sans-serif;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: rgba(99, 102, 241, 0.15);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  color: #a5b4fc;
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 9999px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-card-title {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #ffffff;
+  letter-spacing: -0.03em;
+  margin-bottom: 2px;
+}
+
+.auth-card-subtitle {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+/* Mobile Segmented Control (Password vs OTP) */
+.auth-tabs {
+  display: flex;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 4px;
+  border-radius: 11px;
+  margin-bottom: 14px;
+  gap: 4px;
+}
+
+.auth-tab-btn {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 42px; /* Apple HIG recommended touch target */
+  border-radius: 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  font-size: 0.84rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #94a3b8;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.auth-tab-btn:active {
+  transform: scale(0.98);
+}
+
+.auth-tab-btn.active {
+  background: linear-gradient(135deg, rgba(99, 102, 241, 0.38) 0%, rgba(129, 140, 248, 0.2) 100%);
+  color: #ffffff;
+  border-color: rgba(129, 140, 248, 0.35);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+/* Form Groups & Touch Inputs */
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.auth-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.auth-input-label {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #cbd5e1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.auth-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.auth-input-icon {
+  position: absolute;
+  left: 14px;
+  color: #818cf8;
+  pointer-events: none;
+}
+
+/* Mobile-First Input: font-size 16px is MANDATORY to prevent iOS Safari auto-zoom! */
+.auth-input {
+  width: 100%;
+  height: 44px; /* 44px touch height */
+  min-height: 44px;
+  padding: 0 14px 0 42px;
+  border: 1.5px solid rgba(255, 255, 255, 0.12);
+  border-radius: 11px;
+  font-size: 16px; /* Prevents auto-zoom on mobile devices */
+  color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.05);
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.01em;
+  color-scheme: dark;
+  box-sizing: border-box;
+}
+
+.auth-input:focus {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: #818cf8;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.25), 0 0 16px rgba(99, 102, 241, 0.2);
+}
+
+/* Chrome / Safari / Edge / Firefox Autofill: Prevent browser from turning input white */
+.auth-input:-webkit-autofill,
+.auth-input:-webkit-autofill:hover,
+.auth-input:-webkit-autofill:focus,
+.auth-input:-webkit-autofill:active {
+  -webkit-text-fill-color: #ffffff !important;
+  -webkit-box-shadow: 0 0 0 1000px #111827 inset !important;
+  box-shadow: 0 0 0 1000px #111827 inset !important;
+  transition: background-color 50000s ease-in-out 0s !important;
+  caret-color: #ffffff !important;
+  border-color: #818cf8 !important;
+}
+
+.auth-input:-moz-autofill,
+.auth-input:-moz-autofill-preview {
+  filter: none !important;
+  background-color: #111827 !important;
+  color: #ffffff !important;
+  -moz-text-fill-color: #ffffff !important;
+}
+
+.auth-input::placeholder {
+  color: #64748b;
+  font-size: 0.9rem;
+}
+
+.auth-input-password-toggle {
+  position: absolute;
+  right: 6px;
+  width: 40px;
+  height: 40px;
+  background: none;
+  border: none;
+  color: #94a3b8;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.auth-input-password-toggle:hover,
+.auth-input-password-toggle:active {
+  color: #ffffff;
+}
+
+/* Phone Input Prefix */
+.auth-phone-prefix {
+  position: absolute;
+  left: 40px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #a5b4fc;
+  border-right: 1px solid rgba(255, 255, 255, 0.15);
+  padding-right: 8px;
+  line-height: 1;
+}
+
+.auth-input-phone {
+  padding-left: 88px !important;
+}
+
+/* Row Options: Remember Me & Forgot Password */
+.auth-row-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2px;
+  font-size: 0.78rem;
+  min-height: 28px;
+}
+
+.auth-checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #94a3b8;
+  cursor: pointer;
+  user-select: none;
+  padding: 4px 0;
+}
+
+.auth-checkbox-label input[type='checkbox'] {
+  accent-color: #4f46e5;
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.auth-forgot-link {
+  color: #818cf8;
+  font-weight: 600;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.78rem;
+  padding: 6px 0;
+  transition: color 0.15s;
+}
+
+.auth-forgot-link:hover,
+.auth-forgot-link:active {
+  color: #c7d2fe;
+}
+
+/* Primary Mobile Submit Button */
+.auth-submit-btn {
+  width: 100%;
+  height: 46px; /* 46px touch height */
+  min-height: 46px;
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 50%, #4338ca 100%);
+  background-size: 200% 200%;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 11px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.015em;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 4px;
+  box-shadow: 0 4px 18px rgba(79, 70, 229, 0.45);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+}
+
+.auth-submit-btn:active:not(:disabled) {
+  transform: scale(0.98);
+  box-shadow: 0 2px 10px rgba(79, 70, 229, 0.4);
+}
+
+.auth-submit-btn:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Spinner */
+.auth-spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: #ffffff;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.auth-spinner-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* OTP Specific UI */
+.auth-otp-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.auth-send-otp-btn {
+  height: 44px;
+  padding: 0 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #cbd5e1;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.18s;
+  user-select: none;
+}
+
+.auth-send-otp-btn:active:not(:disabled) {
+  background: rgba(255, 255, 255, 0.12);
+  transform: scale(0.97);
+}
+
+.auth-otp-notice {
+  font-size: 0.74rem;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.auth-demo-otp-btn {
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.35);
+  color: #34d399;
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.auth-demo-otp-btn:active {
+  transform: scale(0.96);
+}
+
+/* Divider */
+.auth-divider {
+  display: flex;
+  align-items: center;
+  margin: 12px 0;
+  color: #64748b;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.auth-divider::before,
+.auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.auth-divider span {
+  padding: 0 10px;
+}
+
+/* Mobile Google Sign In Button */
+.auth-google-btn {
+  width: 100%;
+  height: 44px;
+  min-height: 44px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 11px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  letter-spacing: -0.01em;
+  color: #f1f5f9;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.auth-google-btn:active {
+  transform: scale(0.98);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.auth-google-icon {
+  width: 18px;
+  height: 18px;
+}
+
+/* Switch between Sign In / Sign Up Footer */
+.auth-switch-footer {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  text-align: center;
+  margin-top: 14px;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  letter-spacing: -0.01em;
+}
+
+.auth-switch-btn {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  background: none;
+  border: none;
+  color: #818cf8;
+  font-weight: 700;
+  cursor: pointer;
+  margin-left: 6px;
+  font-size: inherit;
+  padding: 4px;
+  transition: color 0.15s;
+  letter-spacing: -0.01em;
+}
+
+.auth-switch-btn:hover,
+.auth-switch-btn:active {
+  color: #c7d2fe;
+}
+
+/* Security Guarantee Banner at bottom of form */
+.auth-security-badge {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+}
+
+/* =========================================================
+   Modal Dialogs (Forgot Password & Reset)
+   ========================================================= */
+.auth-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(4, 7, 14, 0.8);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.auth-modal-content {
+  background: #0f172a;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+  box-shadow: 0 24px 60px -10px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.06);
+  color: #f8fafc;
+  animation: modalScale 0.2s ease;
+  box-sizing: border-box;
+}
+
+@keyframes modalScale {
+  from { transform: scale(0.95); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.auth-modal-header {
+  text-align: center;
+  margin-bottom: 18px;
+}
+
+.auth-modal-icon-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: rgba(99, 102, 241, 0.18);
+  border: 1px solid rgba(129, 140, 248, 0.3);
+  color: #818cf8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+  box-shadow: 0 0 18px rgba(99, 102, 241, 0.25);
+}
+
+.auth-modal-header h3 {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 4px;
+  letter-spacing: -0.025em;
+}
+
+.auth-modal-subtitle {
+  font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+
+.auth-modal-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.auth-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.auth-modal-cancel-btn {
+  color: #94a3b8;
+  min-height: 42px;
+}
+
+.auth-modal-submit-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 42px;
+}
+
+.auth-modal-success {
+  text-align: center;
+  padding: 6px 0;
+}
+
+.auth-success-badge {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(16, 185, 129, 0.18);
+  border: 1px solid rgba(52, 211, 153, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 12px;
+}
+
+.auth-modal-success h4 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin-bottom: 6px;
+}
+
+.auth-modal-success p {
+  font-size: 0.82rem;
+  color: #94a3b8;
+  line-height: 1.45;
+  margin-bottom: 14px;
+}
+
+.auth-security-notice {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.74rem;
+  color: #94a3b8;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.auth-modal-success-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+/* =========================================================
+   2. TABLET ENHANCEMENT (min-width: 640px)
+   ========================================================= */
+@media (min-width: 640px) {
+  .auth-cool-card {
+    padding: 28px 24px;
+  }
+  
+  .auth-signup-grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+}
+
+/* =========================================================
+   3. DESKTOP PROGRESSIVE ENHANCEMENT (min-width: 1024px)
+   Reveals full split-screen showcase with zero overflow
+   ========================================================= */
+@media (min-width: 1024px) {
+  .auth-page-container {
+    flex-direction: row;
+    height: 100vh;
+    max-height: 100vh;
+    overflow: hidden !important;
+    padding: 0;
+  }
+
+  /* Desktop Left Hero Panel */
+  .auth-hero-panel {
+    flex: 1.1;
+    align-items: flex-start;
+    text-align: left;
+    background: transparent !important;
+    border-right: none !important;
+    backdrop-filter: none !important;
+    -webkit-backdrop-filter: none !important;
+    padding: clamp(16px, 2.5vh, 28px) clamp(24px, 3.5vw, 44px);
+    justify-content: space-between;
+    height: 100vh;
+    max-height: 100vh;
+    box-sizing: border-box;
+    overflow: hidden !important;
+  }
+
+  .auth-hero-brand {
+    justify-content: flex-start;
+    margin-bottom: 0;
+  }
+
+  .auth-hero-logo-icon {
+    width: 38px;
+    height: 38px;
+  }
+
+  .auth-hero-brand-name {
+    font-size: 1.35rem;
+  }
+
+  .auth-hero-content {
+    margin: auto 0;
+    max-width: 500px;
+  }
+
+  /* Reveal desktop marketing elements */
+  .auth-hero-title {
+    display: block;
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: clamp(1.4rem, 1.8vw, 1.95rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.035em;
+    color: #ffffff;
+    margin-bottom: 6px;
+  }
+
+  .auth-hero-title span {
+    background: linear-gradient(135deg, #818cf8 0%, #38bdf8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .auth-hero-desc {
+    display: block;
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.82rem;
+    color: #94a3b8;
+    line-height: 1.45;
+    letter-spacing: -0.01em;
+    margin-bottom: 12px;
+  }
+
+  /* Desktop Feature Cards Showcase */
+  .auth-hero-features {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+    margin-bottom: 14px;
+    width: 100%;
+  }
+
+  .auth-feature-card {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(15, 23, 42, 0.6) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    border-radius: 13px;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.06);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: default;
+  }
+
+  /* Shimmer gradient line on top edge */
+  .auth-feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
+    opacity: 0.6;
+    transition: opacity 0.25s ease;
+  }
+
+  .auth-feature-card:hover {
+    transform: translateX(4px);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.075) 0%, rgba(15, 23, 42, 0.75) 100%);
+    box-shadow: 0 8px 26px -4px rgba(0, 0, 0, 0.55), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  .auth-feature-card:hover::before {
+    opacity: 1;
+  }
+
+  /* Left accent borders */
+  .auth-feature-card::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    border-radius: 4px 0 0 4px;
+    opacity: 0.85;
+    transition: opacity 0.2s ease, width 0.2s ease;
+  }
+
+  .auth-feature-card:hover::after {
+    opacity: 1;
+    width: 4px;
+  }
+
+  /* Card 1 / Indigo variant */
+  .auth-feature-card:nth-child(1),
+  .auth-feature-card-indigo {
+    border-color: rgba(99, 102, 241, 0.2);
+  }
+  .auth-feature-card:nth-child(1)::after,
+  .auth-feature-card-indigo::after {
+    background: linear-gradient(180deg, #818cf8, #4f46e5);
+  }
+  .auth-feature-card:nth-child(1):hover,
+  .auth-feature-card-indigo:hover {
+    border-color: rgba(129, 140, 248, 0.45);
+    box-shadow: 0 8px 24px -4px rgba(99, 102, 241, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  /* Card 2 / Cyan variant */
+  .auth-feature-card:nth-child(2),
+  .auth-feature-card-cyan {
+    border-color: rgba(14, 165, 233, 0.2);
+  }
+  .auth-feature-card:nth-child(2)::after,
+  .auth-feature-card-cyan::after {
+    background: linear-gradient(180deg, #38bdf8, #0284c7);
+  }
+  .auth-feature-card:nth-child(2):hover,
+  .auth-feature-card-cyan:hover {
+    border-color: rgba(56, 189, 248, 0.45);
+    box-shadow: 0 8px 24px -4px rgba(14, 165, 233, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  /* Card 3 / Emerald variant */
+  .auth-feature-card:nth-child(3),
+  .auth-feature-card-emerald {
+    border-color: rgba(16, 185, 129, 0.2);
+  }
+  .auth-feature-card:nth-child(3)::after,
+  .auth-feature-card-emerald::after {
+    background: linear-gradient(180deg, #34d399, #059669);
+  }
+  .auth-feature-card:nth-child(3):hover,
+  .auth-feature-card-emerald:hover {
+    border-color: rgba(52, 211, 153, 0.45);
+    box-shadow: 0 8px 24px -4px rgba(16, 185, 129, 0.28), inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  }
+
+  /* Icon Box Styling */
+  .auth-feature-icon-box {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .auth-feature-card:hover .auth-feature-icon-box {
+    transform: scale(1.1) rotate(-3deg);
+  }
+
+  .auth-feature-card:nth-child(1) .auth-feature-icon-box,
+  .auth-feature-card-indigo .auth-feature-icon-box {
+    background: linear-gradient(135deg, rgba(99, 102, 241, 0.25) 0%, rgba(67, 56, 202, 0.45) 100%);
+    border: 1px solid rgba(165, 180, 252, 0.35);
+    color: #c7d2fe;
+    box-shadow: 0 0 14px rgba(99, 102, 241, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .auth-feature-card:nth-child(2) .auth-feature-icon-box,
+  .auth-feature-card-cyan .auth-feature-icon-box {
+    background: linear-gradient(135deg, rgba(14, 165, 233, 0.25) 0%, rgba(2, 132, 199, 0.45) 100%);
+    border: 1px solid rgba(125, 211, 252, 0.35);
+    color: #bae6fd;
+    box-shadow: 0 0 14px rgba(14, 165, 233, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .auth-feature-card:nth-child(3) .auth-feature-icon-box,
+  .auth-feature-card-emerald .auth-feature-icon-box {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.25) 0%, rgba(5, 150, 105, 0.45) 100%);
+    border: 1px solid rgba(110, 231, 183, 0.35);
+    color: #a7f3d0;
+    box-shadow: 0 0 14px rgba(16, 185, 129, 0.3), inset 0 1px 1px rgba(255, 255, 255, 0.3);
+  }
+
+  /* Body & Typography */
+  .auth-feature-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .auth-feature-header-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-bottom: 2px;
+  }
+
+  .auth-feature-title {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: -0.015em;
+  }
+
+  .auth-feature-desc {
+    font-family: 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.77rem;
+    color: #94a3b8;
+    line-height: 1.45;
+    letter-spacing: -0.005em;
+  }
+
+  /* Feature Pill Micro-Badges */
+  .auth-feature-pill {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.62rem;
+    font-weight: 700;
+    padding: 2px 7px;
+    border-radius: 9999px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    line-height: 1.2;
+  }
+
+  .auth-feature-pill-dot {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: #34d399;
+    box-shadow: 0 0 6px #34d399;
+    animation: pulseDot 2s infinite;
+    display: inline-block;
+  }
+
+  .auth-feature-pill-emerald {
+    background: rgba(16, 185, 129, 0.16);
+    color: #6ee7b7;
+    border: 1px solid rgba(52, 211, 153, 0.35);
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.15);
+  }
+
+  .auth-feature-pill-cyan {
+    background: rgba(14, 165, 233, 0.16);
+    color: #7dd3fc;
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    box-shadow: 0 0 8px rgba(14, 165, 233, 0.15);
+  }
+
+  .auth-feature-pill-violet {
+    background: rgba(168, 85, 247, 0.16);
+    color: #d8b4fe;
+    border: 1px solid rgba(192, 132, 252, 0.35);
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.15);
+  }
+
+  /* Desktop Stats Ticker */
+  .auth-hero-stats {
+    display: flex;
+    gap: 14px;
+    padding-top: 10px;
+    margin-top: 4px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .auth-hero-stat-item h5 {
+    font-family: 'Outfit', 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 1.15rem;
+    font-weight: 800;
+    color: #ffffff;
+    margin-bottom: 0;
+    letter-spacing: -0.03em;
+    text-shadow: 0 0 12px rgba(99, 102, 241, 0.45);
+  }
+
+  .auth-hero-stat-item p {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 0.65rem;
+    color: #94a3b8;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  /* Desktop Footer */
+  .auth-hero-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    font-size: 0.72rem;
+    color: #64748b;
+    padding-top: 6px;
+  }
+
+  .auth-hero-footer a {
+    color: #94a3b8;
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+
+  .auth-hero-footer a:hover {
+    color: #ffffff;
+  }
+
+  /* Desktop Form Column */
+  .auth-form-panel {
+    flex: 1;
+    height: 100vh;
+    max-height: 100vh;
+    padding: clamp(14px, 2vh, 24px) clamp(18px, 3vw, 36px);
+    overflow: hidden !important;
+  }
+
+  .auth-cool-card {
+    padding: clamp(16px, 2.5vh, 26px) clamp(18px, 3vw, 28px);
+    margin: auto 0;
+  }
+
+  .auth-input {
+    height: 38px;
+    min-height: 38px;
+    font-size: 0.88rem;
+  }
+
+  .auth-submit-btn {
+    height: 40px;
+    min-height: 40px;
+    font-size: 0.88rem;
+  }
+
+  .auth-google-btn {
+    height: 38px;
+    min-height: 38px;
+  }
+}

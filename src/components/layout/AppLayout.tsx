@@ -4,6 +4,7 @@ import { Topbar } from './Topbar';
 import { AddPropertyModal } from '../../features/properties/components/AddPropertyModal';
 import { EditPropertyModal } from '../../features/properties/components/EditPropertyModal';
 import { ToastContainer } from '../common/ToastContainer';
+import { useUIStore } from '../../store/useUIStore';
 
 export interface AppLayoutProps {
   children: React.ReactNode;
@@ -16,11 +17,14 @@ export const AppLayout: React.FC<AppLayoutProps> = ({
   currentPath,
   onNavigate,
 }) => {
+  const { isSidebarOpen, closeDrawer } = useUIStore();
+
   return (
     <div className="app-layout">
+      {isSidebarOpen && <div className="sidebar-backdrop" onClick={closeDrawer} />}
       <Sidebar currentPath={currentPath} onNavigate={onNavigate} />
       <div className="main-wrapper">
-        <Topbar />
+        <Topbar onNavigate={onNavigate} />
         <main className="content-area">{children}</main>
       </div>
       <AddPropertyModal />
